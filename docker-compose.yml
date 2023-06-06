@@ -70,7 +70,7 @@ services:
     volumes:
       - /var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "7432:5432"
     networks:
       - app-network
     env_file:
@@ -83,7 +83,7 @@ services:
       - REDIS_URL='redis://redis:6379'
 
     ports: 
-    - "6379:6379"
+    - "7379:6379"
     restart: always
     volumes:
       - /var/lib/redis/data
