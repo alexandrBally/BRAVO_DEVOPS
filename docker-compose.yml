@@ -20,7 +20,7 @@ services:
       - .env
 
   backend:
-      build: ./backend
+      build: ./BRAVO_BE
       container_name: backend
       restart: unless-stopped
       tty: true
@@ -39,7 +39,7 @@ services:
         - .env
 
   frontend:
-      build: ./frontend
+      build: ./BRAVO_FE
       container_name: frontend
       restart: unless-stopped
       tty: true
