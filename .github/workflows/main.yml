@@ -1,7 +1,7 @@
 on:
     push:
       branches:
-        - develop
+        - main
     workflow_dispatch:
     
 jobs:
@@ -19,11 +19,12 @@ jobs:
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
     
       - name: Set up SSH keys
-        uses: webfactory/ssh-agent@v0.4.0 # Использовать github action, чтобы настроить ssh-agent
+        uses: webfactory/ssh-agent@v0.4.0
         with:
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Используйте ваш приватный ключ SSH
-
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Clone repository
-        run: ssh-add -L && git clone git@github.com:alexandrBally/BRAVO_DEVOPS.git
-          
+        run: |
+            ssh-add -L
+            git clone git@github.com:alexandrBally/BRAVO_DEVOPS.git
+
       
