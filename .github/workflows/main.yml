@@ -18,11 +18,12 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
     
-      - name: Start SSH agent
-        run: |
-          eval $(ssh-agent -s)
-          echo "${{ secrets.SSH_KEY }}" | ssh-add
+      - name: Set up SSH keys
+        uses: webfactory/ssh-agent@v0.4.0 # Использовать github action, чтобы настроить ssh-agent
+        with:
+            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Используйте ваш приватный ключ SSH
+
+      - name: Clone repository
+        run: ssh-add -L && git clone git@github.com:alexandrBally/BRAVO_DEVOPS.git
           
-      - name: connect and pull repo
-        run:  |
-         ssh bravo@18.116.3.154  "cd /home/bravo/ && git clone -v git@github.com:alexandrBally/BRAVO_DEVOPS.git"
+      
