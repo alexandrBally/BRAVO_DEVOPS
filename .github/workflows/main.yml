@@ -18,10 +18,11 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.SSH_KEY }}"
+
 
       - name: connect and pull repo
         run:  |
+         ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+         ssh-add - <<< "${{ secrets.SSH_KEY }}"
          ssh bravo@18.116.3.154  "cd /home/bravo/BRAVO/BRAVO_FE && git clone git@github.com:alexandrBally/BRAVO_DEVOPS.git"
 
