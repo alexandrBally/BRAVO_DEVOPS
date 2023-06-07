@@ -23,6 +23,6 @@ jobs:
                 env:
                     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-            - name: connect and pull repo
+            - name: connect and pull repo 
               run:  |
                ssh bravo@18.116.3.154  "cd /home/bravo/BRAVO/BRAVO_FE && git clone git@github.com:alexandrBally/BRAVO_DEVOPS.git"
