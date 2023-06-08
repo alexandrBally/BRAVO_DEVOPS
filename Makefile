@@ -11,10 +11,9 @@ export $(shell sed 's/=.*//' .env)
 #Docker
 start:
 	docker compose up --build 
-	echo "docker compose up startet" 
 stop: 
 	docker compose down
-	echo "container stopped"
+
 restart:
 	docker compose down 
 	echo "Y" | docker container prune 
@@ -22,6 +21,7 @@ restart:
 	docker compose up --build 
 migrate:
 	docker exec -i backend npm run db:migrate:up
+
 cleaning:
 	echo "Y" | docker container prune
 	echo "Y" | docker system prune -f 
@@ -48,6 +48,9 @@ backup-all:
 	docker exec postgres pg_dump -U ${POSTGRES_DB_USER} ${POSTGRES_DB} > ${BACKUP_DIR}${BACKUP_FILE_POSTGRES}
 	docker exec redis redis-cli SAVE
 	docker cp redis:/data/dump.rdb ${BACKUP_DIR}${BACKUP_FILE_REDIS}
+
+copy:
+	if [ ! -f ./test ]; then cp ./Dockerfile/test .test; fi
 
 
 

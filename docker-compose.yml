@@ -1,32 +1,13 @@
 version: '3.8'
 services:
-  nginx:
-    image: nginx:1.23.4
-    container_name: nginx
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "7000:80"
-    volumes:
-      - ./nginx/configs/conf.d/:/etc/nginx/conf.d/
-    depends_on:
-      - frontend
-      - backend
-      - postgres
-      - redis
-    networks:
-      - app-network
-    env_file:
-      - .env
-
   backend:
       build: ./BRAVO_BE
-      container_name: backend
+      container_name: bravo-backend
       restart: unless-stopped
       tty: true
       working_dir: /usr/app
       ports:
-        - "7001:4000"
+        - "5001:4000"
       volumes:
         - /app/node_modules
         - ./backend/src/:/app/
@@ -40,12 +21,12 @@ services:
 
   frontend:
       build: ./BRAVO_FE
-      container_name: frontend
+      container_name: bravo-frontend
       restart: unless-stopped
       tty: true
       working_dir: /usr/app
       ports:
-        - "7002:3000"
+        - "5002:3000"
       volumes:
         - /app/node_modules
         - ./frontend/src/:/app/
@@ -55,10 +36,9 @@ services:
         - app-network
       env_file:
         - .env
-
   postgres:
     image: postgres
-    container_name: postgres
+    container_name: bravo-postgres
     restart: always
     environment:
       - POSTGRES_DB_HOST=postgres
@@ -68,9 +48,9 @@ services:
       - POSTGRES_DB=bravo_db
       - POSTGRES_DB_LOGGING=false
     volumes:
-      - /var/lib/postgresql/data
+      - ./data/pg_data/:/var/lib/postgresql/data/
     ports:
-      - "7432:5432"
+      - "5532:5432"
     networks:
       - app-network
     env_file:
@@ -78,18 +58,19 @@ services:
 
   redis:
     image: redis
-    container_name: redis
+    container_name: bravo-redis
     environment:
       - REDIS_URL='redis://redis:6379'
 
     ports: 
-    - "7379:6379"
+    - "5379:6379"
     restart: always
     volumes:
-      - /var/lib/redis/data
+      - ./data/redis_data/:/usr/local/etc/redis/redis.conf
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
